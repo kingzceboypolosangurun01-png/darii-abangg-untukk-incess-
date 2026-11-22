@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5eeee">
+<title>Satu Pertanyaan untuk Incesss</title>
+<style>
+:root{--ink:#352d31;--muted:#796d72;--rose:#9b6678;--rose2:#75495a;--paper:#fffdfb;--line:#eadfe2}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:24px;display:grid;place-items:center;background:radial-gradient(circle at 15% 10%,#fff 0,transparent 35%),linear-gradient(135deg,#f4eeee,#eadfe3);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+main{width:min(100%,480px);background:var(--paper);border:1px solid #fff;border-radius:22px;padding:30px 25px;box-shadow:0 20px 60px #47313b14}
+.kicker{text-transform:uppercase;letter-spacing:2.2px;font-size:10px;font-weight:700;color:var(--rose)}
+h1{font-family:Georgia,serif;font-size:34px;font-weight:400;line-height:1.15;margin:14px 0 18px;color:#49353e}
+p{font-size:15px;line-height:1.8;color:#62565b;margin:0 0 13px}
+.rule{height:1px;background:var(--line);margin:22px 0}
+.game-title{font-family:Georgia,serif;font-size:21px;color:#513d45;margin:0 0 8px}
+.hint{font-size:13px;color:var(--muted);margin-bottom:15px}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.choice{min-height:76px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--rose2);font-size:22px;cursor:pointer}
+.choice span{display:block;font-size:11px;letter-spacing:.5px;margin-top:5px;color:var(--muted)}
+#result,#reply{display:none;margin-top:14px;padding:14px;border-radius:12px;background:#f7f0f2;font-size:14px;line-height:1.7;color:#57454c}
+.question{font-family:Georgia,serif;font-size:23px;line-height:1.45;color:#49353e;margin:20px 0 16px}
+.answer-area{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;min-height:58px}
+button.action{border-radius:999px;padding:12px 17px;border:1px solid #d8c4cb;background:white;color:#654957;font-weight:650;font-size:13px;cursor:pointer}
+button.primary{background:var(--rose2);border-color:var(--rose2);color:white}
+#noBtn{transition:left .18s ease,top .18s ease,transform .18s ease;z-index:3}
+.note{font-size:12px;color:var(--muted);text-align:center;margin-top:13px}
+footer{margin-top:23px;text-align:center;font-size:12px;color:#988990}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Sebuah pesan dari Abangg</div>
+  <h1>Untuk Incesss.</h1>
+  <p>Abangg suka cara Incesss hadir di hari-hari biasa. Obrolan sederhana bisa jadi hal yang ditunggu, dan tanpa sadar, Incesss jadi seseorang yang ingin Abangg kenal lebih dekat.</p>
+  <p>Daripada menyimpan perasaan ini terlalu lama, Abangg mau bertanya langsung. Tapi sebelumnya, Incesss harus melewati satu tantangan kecil.</p>
+  <div class="rule"></div>
+  <h2 class="game-title">Pilih satu kartu keberuntungan</h2>
+  <div class="hint">Pilih salah satu. Jangan terlalu lama mikir—ini cuma permainan kecil.</div>
+  <div class="choices">
+    <button class="choice" onclick="pick(0)">♡<span>Kartu 1</span></button>
+    <button class="choice" onclick="pick(1)">✦<span>Kartu 2</span></button>
+    <button class="choice" onclick="pick(2)">☾<span>Kartu 3</span></button>
+  </div>
+  <div id="result" role="status"></div>
+  <div class="rule"></div>
+  <div class="question">Incesss, bersediakah Incesss memberi Abangg kesempatan untuk menjalani hubungan yang lebih dari sekadar teman?</div>
+  <div class="answer-area" id="answerArea">
+    <button class="action primary" onclick="respond('yes')">Aku mau ❤️</button>
+    <button class="action" id="noBtn" onclick="respond('think')">Belum / tidak</button>
+  </div>
+  <div class="note" id="hintNo">Psst… tombol "Belum / tidak" agak jahil. Tapi Incesss tetap bebas memilih. :)</div>
+  <div id="reply" role="status"></div>
+  <footer>Apa pun jawabannya, Abangg akan menghargainya.</footer>
+</main>
+<script>
+let dodgeCount=0;
+function pick(n){
+ const messages=[
+  'Kartu ini bilang: ada seseorang yang diam-diam berharap bisa jadi alasan Incesss tersenyum. Sepertinya Abangg tahu orangnya siapa.',
+  'Wah, kartu ini memilih tantangan: Incesss boleh kasih Abangg satu pertanyaan apa pun. Abangg harus jawab jujur.',
+  'Kartu keberuntungan terbuka: hadiah utamanya adalah satu pertanyaan sederhana dari Abangg. Tidak ada jawaban yang harus dipaksakan.'
+ ];
+ const r=document.getElementById('result');r.style.display='block';r.textContent=messages[n];
+ document.querySelectorAll('.choice').forEach((b,i)=>{b.disabled=true;b.style.opacity=i===n?'1':'.45'});
+}
+function dodgeNo(){
+ const b=document.getElementById('noBtn'), area=document.getElementById('answerArea');
+ if(dodgeCount>=3){b.textContent='Tetap bisa dipilih';return;}
+ dodgeCount++;
+ const maxX=Math.max(0,area.clientWidth-b.offsetWidth);
+ const maxY=35;
+ b.style.position='relative';
+ b.style.left=(Math.random()*maxX-maxX/2)+'px';
+ b.style.top=(Math.random()*maxY-maxY/2)+'px';
+ b.style.transform='rotate('+(Math.random()*12-6)+'deg)';
+ if(dodgeCount===1)b.textContent='Eh, coba lagi 😅';
+ else if(dodgeCount===2)b.textContent='Hampir kena!';
+ else b.textContent='Oke, sekarang bisa dipilih';
+}
+const noBtn=document.getElementById('noBtn');
+noBtn.addEventListener('pointerenter',()=>{if(dodgeCount<3)dodgeNo()});
+noBtn.addEventListener('click',()=>{if(dodgeCount<3){dodgeNo();return;}});
+function respond(answer){
+ const r=document.getElementById('reply');r.style.display='block';
+ if(answer==='yes') r.textContent='Wah, akhirnya! Abangg boleh senyum lebar seharian, nih. 😄❤️ Soal fresh flower, tenang… menyusul ya, Incesss. Bunganya mungkin belum sampai, tapi niat baik Abangg sudah duluan. Semoga ini jadi awal cerita yang baik buat kita.';
+ else r.textContent='Tidak apa-apa, Incesss. Ambil waktu yang Incesss butuhkan. Abangg tetap menghargai perasaan dan keputusan Incesss.';
+}
+</script>
+</body>
+</html>
